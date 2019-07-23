@@ -1,4 +1,5 @@
 
+import java.io.IOException;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 import net.sourceforge.jFuzzyLogic.rule.Rule;
@@ -17,7 +18,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String fileName = "src/Archivo FCL.fcl";
         FIS fis = FIS.load(fileName, true);
         // Error while loading?
