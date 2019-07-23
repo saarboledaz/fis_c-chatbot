@@ -3,38 +3,31 @@ FUNCTION_BLOCK tipper
 
 // Define input variables
 VAR_INPUT
-    area : REAL;
-    people : REAL;
-    temperature: REAL;
+    estatura : REAL;
+    longitud_e : REAL;
 END_VAR
 
 // Define output variable
 VAR_OUTPUT
-    power : REAL;
+    talla : REAL;
 END_VAR
 
-FUZZIFY area
-    TERM small := (0, 1) (20, 0) ; 
-    TERM medium := (15, 0) (20,1) (35,0);
-    TERM big := (40, 0.5) (60, 1);
+FUZZIFY estatura
+    TERM bajo := (160, 1) (165, 1) (170, 0) ; 
+    TERM mediano := (165, 0) (170,1) (180,1) (186,0);
+    TERM alto := (179, 0) (186, 1) (195,1);
 END_FUZZIFY
 
-FUZZIFY people
-    TERM few := (0, 1) (4, 0) ; 
-    TERM some := (3, 0) (5,1) (7,1) (9,0);
-    TERM lot := (8, 0) (15, 1);
+FUZZIFY longitud_e
+    TERM corto := (71, 1) (75, 1) (78,0) ; 
+    TERM medio := (75, 0) (78,1) (88,1) (95,0);
+    TERM largo := (88, 0) (95, 1) (102,1);
 END_FUZZIFY
 
-FUZZIFY temperature
-    TERM cold := (0, 1) (20, 0) ; 
-    TERM temp := (18, 0) (22,1) (26,1) (28,0);
-    TERM hot := (26, 0) (45, 1);
-END_FUZZIFY
-
-DEFUZZIFY power
-    TERM low := (0,1) (10,0);
-    TERM medium := (7,0) (16,1) (23,0);
-    TERM high := (20,0) (30,1);
+DEFUZZIFY talla
+    TERM s := (46,1) (51,1) (53,0);
+    TERM m := (51,0) (53,1) (55,1) (56,0);
+    TERM l := (55,0) (56,1) (61,1);
     // Use 'Center Of Gravity' defuzzification method
     METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
@@ -50,24 +43,27 @@ RULEBLOCK No1
     // Use 'max' accumulation method
     ACCU : MAX;
 
-    RULE 1 : IF temperature IS hot AND people IS lot
-                THEN power IS high;
+    RULE 1 : IF estatura IS bajo AND longitud_e IS corto
+                THEN talla IS s;
 
-    RULE 2 : IF area IS small AND people IS lot AND temperature IS temp
-                THEN power IS high;
+    RULE 2 : IF estatura IS mediano AND longitud_e IS corto
+                THEN talla IS s;
 
-    RULE 3 : IF temperature IS cold;
-                THEN power IS low;
+    RULE 3 : IF estatura IS bajo AND longitud_e IS medio
+                THEN talla IS s;
 
-    RULE 4 : IF area IS big AND people IS few
-                THEN power IS low;
+    RULE 4 : IF estatura IS mediano AND longitud_e IS medio
+                THEN talla IS m;
 
-    RULE 5 : IF temperature IS temp AND area IS medium
-                THEN power IS medium;
+    RULE 5 : IF estatura IS mediano AND longitud_e IS largo
+                THEN talla IS l;
 
-    RULE 6 : IF people IS few
-                THEN power IS medium;
-                
+    RULE 6 : IF estatura IS alto AND longitud_e IS largo
+                THEN talla IS l;
+
+    RULE 7 : IF estatura IS alto AND longitud_e IS medio
+                THEN talla IS m;
+
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK
