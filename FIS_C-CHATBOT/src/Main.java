@@ -26,7 +26,7 @@ public class Main {
             System.err.println("Can't load file: '" + fileName + "'");
             return;
         }
-        
+
         MainView view = new MainView(fis);
         view.setVisible(true);
 
